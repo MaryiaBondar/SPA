@@ -1,7 +1,9 @@
+import './../../utilits/index.js'
 import {AddCatalog} from '../../components/catalog/catalog.js'
 import Cart from './../cart/cart.js'
 import Contacts from './../contacts/contacts.js'
 import data from '../../api.js'
+
 document.head.insertAdjacentHTML('beforeend', ' <link rel="stylesheet" href="./styles/style.css">')
 
 let products = [];
@@ -11,7 +13,7 @@ data().then(result => {
     console.log(products)
 })
 
-const linkData = [
+const routes = [
     {name: 'home', component: AddCatalog}, 
     {name: 'cart', component: Cart},
     {name: 'contacts', component: Contacts}
@@ -19,15 +21,16 @@ const linkData = [
 
 
 const nav = document.createElement('nav')
+nav.addTo('body')
 
-linkData.map(item => {
+routes.map(route => {
     const link = document.createElement('li')
-    link.innerHTML = item.name
-    link.addEventListener('click', () => {
-        location.hash = item.name
-        item.component(products)
+    // document.querySelector('body').appendChild(link)
+    link.innerHTML = route.name
+    link.addClass('my-link').addTo('nav').listener('click', () => {
+        location.hash = route.name
+        route.component(products)
     })
-    nav.appendChild(link)
 })
 
 const iconCart = document.createElement('span')
